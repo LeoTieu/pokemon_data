@@ -3,17 +3,19 @@ import json
 
 base_url = "https://pokeapi.co/api/v2/"
 
-def get_pokemon_info(pokemon):
-    pokemon_url = f"{base_url}pokemon={pokemon}"
+
+def get_pokemon_info(pokemon: str) -> json:
+    pokemon_url = f"{base_url}pokemon/{pokemon}"
     response = requests.get(pokemon_url)
 
     if response.status_code != 200:
-        print(f"Could not get pokemon:{pokemon} data with error code {response.status_code}")
+        print(f"Could not get data for pokemon: {pokemon}, with error code {response.status_code}")
         return
 
     return response.json()
-    
-def get_pokemon_names():
+
+
+def get_pokemon_names() -> list:
     current_pokemons = 1025
     url = f"{base_url}pokemon?limit={current_pokemons}&offset=0"
     response = requests.get(url)
@@ -22,12 +24,12 @@ def get_pokemon_names():
         print(f"Error code given: {response.status_code}")
         return
     
-    return response.json()
+    base_dictionary = response.json()
+    pokemon_list = [pokemon['name'] for pokemon in base_dictionary["results"]]
+    return pokemon_list
+
 
 if __name__ == '__main__':
-    pokemons = get_pokemon_names()
-    
-    with open("pokemons.json", "w") as f:
-        json.dump(pokemons, f, indent=4)
-
-    
+    # print(get_pokemon_names())
+    # print(get_pokemon_info("pikachu"))
+    pass

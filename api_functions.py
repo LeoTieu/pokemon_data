@@ -73,18 +73,35 @@ def get_pokemon_types(format: str = "dict") -> dict | list:
 
 
 def get_type_interaction(type: str) -> dict:
-    '''Relies on function get_pokemon_types to be working correctly'''
+    '''
+    Relies on function get_pokemon_types to be working correctly
+    Returns a dictionary of the specific damage relations.
+
+    {
+        "double_damage_from" : [list of types]
+        "double_damage_to" : [list of types]
+        "half_damage_from" : [list of types]
+        "half_damage_to" : [list of types]
+        "no_damage_from" : [list of types]
+        "no_damage_to" : [list of types]
+    } 
+    '''
     type_dict = get_pokemon_types()
     response = requests.get(type_dict[type.lower()])
     check_response(response.status_code)
 
-    return response.json()
+    damage_relation_dict = response.json()['damage_relations']
 
+    # Reformat of values because it's kinda ugly and not very usable
+    for key in damage_relation_dict:
+        damage_relation_dict[key] = [sub_dict["name"] for sub_dict in damage_relation_dict[key]]
+
+    return damage_relation_dict
 
 
 if __name__ == '__main__':
     # print(get_pokemon_info("pikachu"))
     # print(get_pokemon_names())
     # print(get_pokemon_types(format="list"))
-    print(get_type_interaction("normal"))
+    print(get_type_interaction("fighting"))
     pass

@@ -42,7 +42,7 @@ def get_pokemon_names() -> list:
     return pokemon_list
 
 
-def get_pokemon_types(format: str = "dict") -> dict | list:
+def get_pokemon_types(format: str = "list") -> dict | list:
     '''
     Gets all current pokemon types and returns them in either a dict or a list.
     Dict format has key = type and value = api type link.
@@ -84,6 +84,7 @@ def get_type_interaction(type: str) -> dict:
         "half_damage_to" : [list of types]
         "no_damage_from" : [list of types]
         "no_damage_to" : [list of types]
+        "quadrouple_damage_from" : [list of types]
     } 
     '''
     type_dict = get_pokemon_types()
@@ -96,6 +97,8 @@ def get_type_interaction(type: str) -> dict:
     for key in damage_relation_dict:
         damage_relation_dict[key] = [sub_dict["name"] for sub_dict in damage_relation_dict[key]]
 
+    # For dual elemental weakness, letting them share same format. 
+    damage_relation_dict["quadrouple_damage_from"] = []
     return damage_relation_dict
 
 

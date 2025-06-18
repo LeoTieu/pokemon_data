@@ -24,15 +24,12 @@ def get_pokemon_info(pokemon: str) -> dict:
     return response.json()
 
 
-def get_pokemon_names() -> list:
+def get_pokemon_names(AMOUNT = 2000) -> list:
     '''
     Returns a list of all current pokemon names.
-    Must manually enter current pokemon amount manually.
-    Current pokemon amount also works as a limit of how many pokemons to get.
     '''
-    CURRENT_POKEMONS_AMOUNT = 1025
 
-    url = f"{BASE_URL}pokemon?limit={CURRENT_POKEMONS_AMOUNT}&offset=0"
+    url = f"{BASE_URL}pokemon?limit={AMOUNT}&offset=0"
     response = requests.get(url)
 
     check_response(response.status_code)
@@ -103,8 +100,8 @@ def get_type_interaction(type: str) -> dict:
 
 
 if __name__ == '__main__':
-    # print(get_pokemon_info("pikachu"))
-    # print(get_pokemon_names())
+    # print(get_pokemon_info("charizard")["types"])
+    print(get_pokemon_names())
     # print(get_pokemon_types(format="list"))
-    print(get_type_interaction("fighting"))
+    # print(get_type_interaction("fighting"))
     pass

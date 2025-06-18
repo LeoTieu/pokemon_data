@@ -13,7 +13,7 @@ def pokemon_dict_builder(pokemon_list: list) -> None:
 
 def temp() -> None:
     type_list = get_pokemon_types(type="list")
-    
+
     
 
 

@@ -84,7 +84,7 @@ def get_type_interaction(type: str) -> dict:
         "quadrouple_damage_from" : [list of types]
     } 
     '''
-    type_dict = get_pokemon_types()
+    type_dict = get_pokemon_types(format="dict")
     response = requests.get(type_dict[type.lower()])
     check_response(response.status_code)
 
@@ -95,7 +95,7 @@ def get_type_interaction(type: str) -> dict:
         damage_relation_dict[key] = [sub_dict["name"] for sub_dict in damage_relation_dict[key]]
 
     # For dual elemental weakness, letting them share same format. 
-    damage_relation_dict["quadrouple_damage_from"] = []
+    damage_relation_dict["quadruple_damage_from"] = []
     return damage_relation_dict
 
 

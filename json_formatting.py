@@ -14,7 +14,6 @@ def pokemon_dict_builder(pokemon_list: list) -> None:
 def basic_type_interaction_generator() -> None:
     '''Generates all type interactions for single typed pokémon'''
     type_list = get_pokemon_types(format="list")
-    type_list.remove("unknown")
     simple_type_interaction_dict = {}
     for type in type_list:
         simple_type_interaction_dict[type] = get_type_interaction(type)
@@ -22,6 +21,8 @@ def basic_type_interaction_generator() -> None:
     with open("pokemon_data/single_type_interactions.json", "w") as file:
         json.dump(simple_type_interaction_dict, file, indent=4)
     print("done")
+
+
 
 if __name__ == '__main__':
     # pokemon_list = get_pokemon_names()

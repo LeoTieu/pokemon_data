@@ -46,6 +46,7 @@ def get_pokemon_types(format: str = "list") -> dict | list:
     List just has all current pokemon types.
 
     Pokémon type 'unknown' exists for some reason.
+    Manually removed.
     '''
     url = f"{BASE_URL}type/"
     response = requests.get(url)
@@ -61,9 +62,11 @@ def get_pokemon_types(format: str = "list") -> dict | list:
             pokemon_type = sub_dict["name"]
             type_url = sub_dict["url"]
             type_dict[pokemon_type] = type_url
+            # Still has unknown. Reason? Idk
         return type_dict
     elif format == "list":
         type_list = [dict['name'] for dict in list_of_dicts]
+        type_list.remove("unknown")
         return type_list
     else:
         print(f"Format: {format} is not supported. Use 'list' or 'dict'")

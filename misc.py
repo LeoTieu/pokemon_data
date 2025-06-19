@@ -26,8 +26,6 @@ def get_all_current_type_combinations():
 
 def get_all_possible_type_combinations() -> list:
     type_list = get_pokemon_types()
-    # Not a real type, issue with api. 
-    type_list.remove("unknown")
 
     all_possible = []
     while len(type_list) != 0:
@@ -36,5 +34,7 @@ def get_all_possible_type_combinations() -> list:
             all_possible.append(sorted([current, type]))
     return all_possible
 
-# get_all_current_type_combinations()
-print(len(get_all_possible_type_combinations()))
+if __name__ == '__main__':
+    # get_all_current_type_combinations()
+    # print(len(get_all_possible_type_combinations()))
+    pass

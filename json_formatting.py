@@ -1,5 +1,5 @@
 import json
-from api_functions import get_pokemon_names, get_pokemon_types
+from api_functions import get_pokemon_names, get_pokemon_types, get_type_interaction
 
 
 def pokemon_dict_builder(pokemon_list: list) -> None:
@@ -11,12 +11,20 @@ def pokemon_dict_builder(pokemon_list: list) -> None:
         json.dump(pokemon_dict, file, indent=4)
 
 
-def temp() -> None:
-    type_list = get_pokemon_types(type="list")
-
+def basic_type_interaction_generator() -> None:
+    '''Generates all type interactions for single typed pokémon'''
+    type_list = get_pokemon_types(format="list")
+    type_list.remove("unknown")
+    simple_type_interaction_dict = {}
+    for type in type_list:
+        simple_type_interaction_dict[type] = get_type_interaction(type)
     
-
+    with open("pokemon_data/single_type_interactions.json", "w") as file:
+        json.dump(simple_type_interaction_dict, file, indent=4)
+    print("done")
 
 if __name__ == '__main__':
-    pokemon_list = get_pokemon_names()
-    pokemon_dict_builder(pokemon_list)
+    # pokemon_list = get_pokemon_names()
+    # pokemon_dict_builder(pokemon_list)
+    basic_type_interaction_generator()
+    pass

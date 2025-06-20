@@ -23,9 +23,70 @@ def basic_type_interaction_generator() -> None:
     print("done")
 
 
+def all_type_interactions() -> None:
+    '''
+    Generates all type interactions.
+    Only takes incoming damage to consideration.
+    Requires "pokemon_data/single_type_interactions.json" to be correct.
+    '''
+    with open("pokemon_data/single_type_interactions.json", "r") as file:
+        singular_type_dict = json.load(file)
+    dual_type_dict = {}
+
+
+    type_list = get_pokemon_types()
+    all_possible = []
+    while len(type_list) != 0:
+        current = type_list.pop()
+        for element_2 in type_list:
+            # For same dual types in different orders
+
+            element_1 = current
+            dual_element = tuple(sorted([current, element_2]))
+            dual_type_dict[dual_element] = {}
+
+            # Immunities take priority over weaknesses and strengths
+            immunities_1 = singular_type_dict[element_1]["no_damage_from"]
+            immunities_2 = singular_type_dict[element_2]["no_damage_from"]
+            dual_type_dict[dual_element]["no_damage_from"] = list(set(immunities_1+ immunities_2))
+
+
+
+            # Strength + Weakness -> 1× damage
+            # Strength + Strength -> ¼× damage
+            # Weakness + Weakness -> 4× damage
+
+# Temporary example for easier lookup
+# {
+#     "normal": {
+#         "double_damage_from": [
+#             "fighting"
+#         ],
+#         "double_damage_to": [],
+#         "half_damage_from": [],
+#         "half_damage_to": [
+#             "rock",
+#             "steel"
+#         ],
+#         "no_damage_from": [
+#             "ghost"
+#         ],
+#         "no_damage_to": [
+#             "ghost"
+#         ],
+#         "quadruple_damage_from": []
+#     },
+# }
+
+    
+
+
+    
+
+
 
 if __name__ == '__main__':
     # pokemon_list = get_pokemon_names()
     # pokemon_dict_builder(pokemon_list)
-    basic_type_interaction_generator()
+    all_type_interactions()
     pass

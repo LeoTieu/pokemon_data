@@ -38,13 +38,9 @@ def all_type_interactions() -> None:
     while len(type_list) != 0:
         current = type_list.pop()
         for element_2 in type_list:
-            # Should not happen but why not.
-            if element_2 == element_1:
-                continue
-
             # For same dual types in different orders
             element_1 = current
-            dual_element = tuple(sorted([current, element_2]))
+            dual_element = str(sorted([current, element_2]))
 
             dual_type_dict[dual_element] = {}
             immunities_1 = singular_type_dict[element_1]["no_damage_from"]

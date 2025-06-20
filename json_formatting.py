@@ -44,17 +44,34 @@ def all_type_interactions() -> None:
             element_1 = current
             dual_element = tuple(sorted([current, element_2]))
             dual_type_dict[dual_element] = {}
-
-            # Immunities take priority over weaknesses and strengths
             immunities_1 = singular_type_dict[element_1]["no_damage_from"]
             immunities_2 = singular_type_dict[element_2]["no_damage_from"]
-            dual_type_dict[dual_element]["no_damage_from"] = list(set(immunities_1+ immunities_2))
+            strengths_1 = singular_type_dict[element_1]["half_damage_from"]
+            strengths_2 = singular_type_dict[element_2]["half_damage_from"]
+            weaknesses_1 = singular_type_dict[element_1]["double_damage_from"]
+            weaknesses_2 = singular_type_dict[element_2]["double_damage_from"] 
 
-
+            # Immunities take priority over weaknesses and strengths
+            combined_immunities = list(set(immunities_1 + immunities_2))
+            dual_type_dict[dual_element]["no_damage_from"] = combined_immunities
 
             # Strength + Weakness -> 1× damage
+            negated_1 = [element for element in strengths_1 if element in weaknesses_2]
+            negated_2 = [element for element in strengths_2 if element in weaknesses_1]
+            negations = list(set(negated_1 + negated_2))
+
             # Strength + Strength -> ¼× damage
+            intersected_strengths = [element for element in strengths_1 if element in strengths_2]
+            dual_type_dict[dual_element]["quarter_damage_from"] = combined_immunities
+
             # Weakness + Weakness -> 4× damage
+            intersected_weaknesses = [element for element in weaknesses_1 if element in weaknesses_2]
+            dual_type_dict[dual_element]["quadruple_damage_from"] = intersected_weaknesses
+
+            # Regular double and halfs
+            dual_type_dict[dual_element]["double_damage_from"] = list[set((strengths_1 + strengths_2) - negations)]
+            dual_type_dict[dual_element]["half_damage_from"] = list[set((weaknesses_1 + weaknesses_2) - negations)]
+
 
 # Temporary example for easier lookup
 # {

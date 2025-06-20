@@ -35,14 +35,17 @@ def all_type_interactions() -> None:
 
 
     type_list = get_pokemon_types()
-    all_possible = []
     while len(type_list) != 0:
         current = type_list.pop()
         for element_2 in type_list:
-            # For same dual types in different orders
+            # Should not happen but why not.
+            if element_2 == element_1:
+                continue
 
+            # For same dual types in different orders
             element_1 = current
             dual_element = tuple(sorted([current, element_2]))
+
             dual_type_dict[dual_element] = {}
             immunities_1 = singular_type_dict[element_1]["no_damage_from"]
             immunities_2 = singular_type_dict[element_2]["no_damage_from"]
@@ -62,45 +65,22 @@ def all_type_interactions() -> None:
 
             # Strength + Strength -> ¼× damage
             intersected_strengths = [element for element in strengths_1 if element in strengths_2]
-            dual_type_dict[dual_element]["quarter_damage_from"] = combined_immunities
+            dual_type_dict[dual_element]["quarter_damage_from"] = list(set(intersected_strengths) - set(combined_immunities))
 
             # Weakness + Weakness -> 4× damage
             intersected_weaknesses = [element for element in weaknesses_1 if element in weaknesses_2]
-            dual_type_dict[dual_element]["quadruple_damage_from"] = intersected_weaknesses
+            dual_type_dict[dual_element]["quadruple_damage_from"] = list(set(intersected_weaknesses) - set(combined_immunities))
 
             # Regular double and halfs
-            dual_type_dict[dual_element]["double_damage_from"] = list[set((strengths_1 + strengths_2) - negations)]
-            dual_type_dict[dual_element]["half_damage_from"] = list[set((weaknesses_1 + weaknesses_2) - negations)]
+            double_damage = set(weaknesses_1 + weaknesses_2) - set(negations) - set(combined_immunities)
+            half_damage = set(strengths_1 + strengths_2) - set(negations) - set(combined_immunities)
 
-
-# Temporary example for easier lookup
-# {
-#     "normal": {
-#         "double_damage_from": [
-#             "fighting"
-#         ],
-#         "double_damage_to": [],
-#         "half_damage_from": [],
-#         "half_damage_to": [
-#             "rock",
-#             "steel"
-#         ],
-#         "no_damage_from": [
-#             "ghost"
-#         ],
-#         "no_damage_to": [
-#             "ghost"
-#         ],
-#         "quadruple_damage_from": []
-#     },
-# }
-
+            dual_type_dict[dual_element]["double_damage_from"] = list(double_damage)
+            dual_type_dict[dual_element]["half_damage_from"] = list(half_damage)
     
-
-
-    
-
-
+    with open("pokemon_data/all_type_interactions.json", "w") as file:
+        merged_dict = singular_type_dict | dual_type_dict
+        json.dump(merged_dict, file, indent=4)
 
 if __name__ == '__main__':
     # pokemon_list = get_pokemon_names()

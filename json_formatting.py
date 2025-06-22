@@ -40,7 +40,9 @@ def all_type_interactions() -> None:
         for element_2 in type_list:
             # For same dual types in different orders
             element_1 = current
-            dual_element = str(sorted([current, element_2]))
+            # Looks like "element_1, element_2"
+            dual_element = sorted([current, element_2])
+            dual_element = ", ".join(dual_element)
 
             dual_type_dict[dual_element] = {}
             immunities_1 = singular_type_dict[element_1]["no_damage_from"]

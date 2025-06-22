@@ -1,5 +1,5 @@
 import json
-from api_functions import get_pokemon_names, get_pokemon_types, get_type_interaction
+from api_functions import get_pokemon_names, get_pokemon_types, get_type_interaction, get_pokemon_type
 
 
 def pokemon_dict_builder(pokemon_list: list) -> None:
@@ -34,7 +34,7 @@ def all_type_interactions() -> None:
     dual_type_dict = {}
 
 
-    type_list = get_pokemon_types()
+    type_list = get_generate_pokemon_types()
     while len(type_list) != 0:
         current = type_list.pop()
         for element_2 in type_list:
@@ -80,8 +80,35 @@ def all_type_interactions() -> None:
         merged_dict = singular_type_dict | dual_type_dict
         json.dump(merged_dict, file, indent=4)
 
+
+def generate_pokemon_types():
+    '''
+    Generates a json file with the type corresponding to the pokemon.
+    Format: pokemon: "element_1, element_2"
+    Elements alphabetically sorted.
+    Uses 1 api call per pokemon.
+        
+    Relies on pokemons.json to be this format
+    {
+        "number" : "pokemon"
+    }
+    '''
+    pokemon_type_dict = {}
+
+    with open("pokemon_data/pokemons.json", "r") as file:
+        pokemons = json.load(file)
+    
+    for pokemon in pokemons.values():
+        pokemon_type = get_pokemon_type(pokemon)
+        pokemon_type_dict[pokemon] = pokemon_type
+
+    with open("pokemon_data/pokemon_types.json", "w") as file:
+        json.dump(pokemon_type_dict, file, indent=4)
+
+
 if __name__ == '__main__':
     # pokemon_list = get_pokemon_names()
     # pokemon_dict_builder(pokemon_list)
-    all_type_interactions()
+    # all_type_interactions()
+    generate_pokemon_types()
     pass

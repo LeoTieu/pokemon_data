@@ -102,9 +102,24 @@ def get_type_interaction(type: str) -> dict:
     return damage_relation_dict
 
 
+def get_pokemon_type(pokemon) -> str:
+    '''
+    Returns the type of inputted pokemon
+    Case of 1 element - "element"
+    Case of 2 elements - "element_1, element_2"
+
+    Relies on get_pokemon_info to be working correctly
+    '''
+    pokemon_info = get_pokemon_info(pokemon)
+    types = [slot["type"]["name"] for slot in pokemon_info["types"]]
+    types = ", ".join(sorted(types))
+    return types
+
+
 if __name__ == '__main__':
     # print(get_pokemon_info("charizard")["types"])
-    print(get_pokemon_names())
+    # print(get_pokemon_names())
     # print(get_pokemon_types(format="list"))
     # print(get_type_interaction("fighting"))
+    print(get_pokemon_type("lucario"))
     pass
